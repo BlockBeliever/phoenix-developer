@@ -5,7 +5,8 @@
         <h3 class="title">开发者平台</h3>
       </div>
 
-      <div>
+      <div style="position:relative">
+        <i class="el-icon-loading" style="font-size: 32px;position:absolute ;transform: translate(-50%,-50%);left: 41.5%;top:41.5%;" v-if="loading"></i>
         <vue-qr :logo-src="imageUrl" :text="qrStr" :size="200" />
       </div>
       <div style="position:relative;margin-top:20px;">
@@ -99,12 +100,26 @@ export default {
       login(this.preLogin.uuid).then((res) => {
         if (res.code === 0) {
           clearInterval(this.timer)
-          // 保存信息到store 和 存储
-          this.loading = true
+           // 保存信息到store 和 存储
+           this.loading = true
+          this.$confirm('是否登录?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          
           this.$store.dispatch('user/login', res.data)
-          console.log('跳转')
           this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-          this.loading = false
+          // this.loading = false
+         
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });          
+        });
+         
+          
         }
       })
     },

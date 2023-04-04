@@ -54,9 +54,14 @@ export default {
     return {
     }
   },
-  created(){
+  mounted(){
     this.$store.dispatch("developer/setDeveloperInfo");
   },
+  created(){
+   
+   
+  },
+ 
   methods:{
     moveactive(val){
       console.log(val)
