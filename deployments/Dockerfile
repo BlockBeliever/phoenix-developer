@@ -1,6 +1,6 @@
 FROM nginx:stable
 
-MAINTAINER biyong admin@biyong001.com
+MAINTAINER biyong admin@biyong.com
 
 ADD ./deployments/ngnix/nginx.conf /etc/nginx/nginx.conf
 ADD ./deployments/ngnix/log /var/log/nginx
