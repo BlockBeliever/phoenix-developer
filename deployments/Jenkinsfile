@@ -7,7 +7,7 @@ pipeline {
         stage('git'){
             steps {
                 // 
-                git branch: "${bbranch}",credentialsId: '003', url: 'ssh://git@git.biyong001.com:10022/coin/developer.git'
+                git branch: "${bbranch}",credentialsId: '007', url: 'git@github.com:BlockBeliever/phoenix-developer.git'
                 echo "${bbranch}";
                 echo Branch;
                 // def check_groovy_file="./Jenkinsfile2";
@@ -17,7 +17,7 @@ pipeline {
         }
         stage('build') {
             agent {
-                docker { image 'node:12.20.1-stretch' }
+                docker { image 'node:16.19.0' }
             }
             steps {
                 sh 'npm --version'

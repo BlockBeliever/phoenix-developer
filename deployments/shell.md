@@ -1,9 +1,7 @@
-sudo docker login  -u admin -p Fh7FSgEQ6hMn8MB7Q4URnh76eEDdIXAg https://docker.biyong001.com/
+sudo docker login  -u admin -p Fh7FSgEQ6hMn8MB7Q4URnh76eEDdIXAg https://docker.biyong.com/
 
 ## api
 
-sudo docker run -d --name coin-develop --network coinuse --restart=always docker.biyong001.com/coin/coin-develop:1.0.0-1
+sudo docker rm -f film-admin
 
-
-
-
+sudo docker run  --restart=always --network phoenix --name film-admin -p 10002:9001 -d docker.biyong001.com/pre/phoenix-admin:1.0.0-2
