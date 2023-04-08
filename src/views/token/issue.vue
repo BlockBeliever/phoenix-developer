@@ -106,7 +106,7 @@ export default {
               });
             } else {
               this.$notify({
-                title: "成功",
+                title: "失败",
                 message: res.message,
                 type: "error",
                 duration: 2000

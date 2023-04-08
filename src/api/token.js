@@ -39,3 +39,4 @@ export function issueToken(data) {
     data: data
   });
 }
+

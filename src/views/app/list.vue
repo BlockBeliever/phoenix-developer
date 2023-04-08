@@ -81,29 +81,43 @@
       <el-table-column
         fixed="right"
         label="操作"
-        width="120"
+        width="140"
       >
         <template slot-scope="scope">
-          <router-link
+          <!-- <router-link
             :to="'/app/edit?id=' + scope.row.id"
             class="action"
           >
             编辑
-          </router-link>
+          </router-link> -->
           <router-link
             :to="'/app/menber?tokenId=' + scope.row.id"
             class="action"
           >
             用户
           </router-link>
-          <br />
           <span
             class="action"
             @click="publish(scope.row.id)"
-            v-if="scope.row.isPublish == 0"
+            v-if="scope.row.isPublish == 0 || scope.row.isPublish == 3"
           >
             发布
           </span>
+          <span
+            class="action"
+            @click="downToken(scope.row.id)"
+            v-if="scope.row.isPublish == 1"
+          >
+            下架
+          </span>
+          <span
+            class="action"
+            @click="delToken(scope.row.id)"
+          >
+            删除
+          </span>
+          <br />
+         
           <router-link
             :to="
               '/app/pay?id=' +
@@ -141,7 +155,7 @@
 </template>
 
 <script>
-import { getDapps, publishDapp } from "@/api/developer";
+import { getDapps, publishDapp,tokenDel,tokenDown } from "@/api/developer";
 
 export default {
   data() {
@@ -163,6 +177,50 @@ export default {
       });
   },
   methods: {
+    downToken(id){
+      tokenDown({id:id}).then(res => {
+        if (res.code == 0) {
+          this.$notify({
+            title: "成功",
+            message: "下架成功",
+            type: "success",
+            duration: 2000
+          });
+          setTimeout(function() {
+            window.location.reload();
+          }, 2000);
+        } else {
+          this.$notify({
+            title: "下架失败",
+            message: res.message,
+            type: "error",
+            duration: 2000
+          });
+        }
+      });
+    },
+    delToken(id){
+      tokenDel({id:id}).then(res => {
+        if (res.code == 0) {
+          this.$notify({
+            title: "成功",
+            message: "删除成功",
+            type: "success",
+            duration: 2000
+          });
+          setTimeout(function() {
+            window.location.reload();
+          }, 2000);
+        } else {
+          this.$notify({
+            title: "删除失败",
+            message: res.message,
+            type: "error",
+            duration: 2000
+          });
+        }
+      });
+    },
     indexMethod(index) {
       return index + 1;
     },
@@ -242,6 +300,7 @@ export default {
   padding: 0 5px;
 }
 .action:hover {
+  cursor: pointer;
   font-weight: bolder;
 }
 </style>

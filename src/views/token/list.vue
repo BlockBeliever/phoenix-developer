@@ -138,7 +138,7 @@
             break;
         
           default:
-            return "审核中"
+            return "禁用"
             break;
         }
       },

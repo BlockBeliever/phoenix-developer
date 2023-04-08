@@ -79,3 +79,19 @@ export function getDappPay(id) {
     data: { dappId: id }
   });
 }
+
+export function tokenDown(data) {
+  return request({
+    url: "/v1/dapp/down",
+    method: "post",
+    data: data
+  });
+}
+
+export function tokenDel(data) {
+  return request({
+    url: "/v1/dapp/delete",
+    method: "post",
+    data: data
+  });
+}

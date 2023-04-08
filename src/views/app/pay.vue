@@ -8,7 +8,7 @@
       label-width="100px"
     >
       <div class="createPost-main-container">
-        <el-row v-if="developerInfo == null || developerInfo.developer.status != 2">
+        <el-row v-if="developerInfo == null || developerInfo.developer.status == 2">
           <Warning />
         </el-row>
 
@@ -119,7 +119,8 @@ export default {
                 type: "success",
                 duration: 2000
               });
-              window.location.reload();
+              this.$router.go(-1)
+              // window.location.reload();
             } else {
               this.$notify({
                 title: "失败",
