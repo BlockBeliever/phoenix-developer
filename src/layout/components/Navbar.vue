@@ -113,7 +113,8 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$store.commit('developer/info',null)
+      // await this.$store.dispatch('develop')
+      this.$store.commit('developer/SET_DEVELOPER',null)
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }

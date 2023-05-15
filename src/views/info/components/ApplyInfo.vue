@@ -2,7 +2,8 @@
   <div class="container">
     <div class="flexbox" v-if="developerInfo.developer.status==0">
         <div>
-          <img src="https://files.axshare.com/gsc/7DON1M/0d/3c/90/0d3c90bdc637471db987c488ba2fc9c6/images/%E7%94%B3%E8%AF%B7%E4%B8%AD/u16.png?pageId=5f9d2780-4b0d-41da-afa6-f0c18dade4f7">
+          <i class="el-icon-link" style="font-size:58px"></i>
+          <!-- <img src="https://files.axshare.com/gsc/7DON1M/0d/3c/90/0d3c90bdc637471db987c488ba2fc9c6/images/%E7%94%B3%E8%AF%B7%E4%B8%AD/u16.png?pageId=5f9d2780-4b0d-41da-afa6-f0c18dade4f7"> -->
         </div>
         <span style="margin-top:20px;margin-bottom: 50px;">资料审核中，请耐心等待！</span>
       </div>

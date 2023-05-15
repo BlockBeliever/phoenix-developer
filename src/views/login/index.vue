@@ -116,10 +116,25 @@ export default {
           this.$message({
             type: 'info',
             message: '已取消'
-          });          
+          });  
+          location. reload()        
         });
          
           
+        }else if(res.message=="您已经被禁止登录"){
+          this.$confirm('您账户已被禁用', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          location. reload()
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });  
+          location. reload()        
+        });
         }
       })
     },

@@ -35,7 +35,7 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, data) {
-    console.log(data,6666);
+   
     commit("SET_TOKEN", data);
     setToken(data);
   },
@@ -75,7 +75,7 @@ const actions = {
           commit("SET_ROLES", []);
           removeToken();
           resetRouter();
-
+          commit("")
           // reset visited views and cached views
           // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
           dispatch("tagsView/delAllViews", null, { root: true });
@@ -112,7 +112,7 @@ const actions = {
           commit("SET_ROLES", []);
           removeToken();
           resetRouter();
-
+          
           // reset visited views and cached views
           // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
           dispatch("tagsView/delAllViews", null, { root: true });
