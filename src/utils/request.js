@@ -59,16 +59,17 @@ service.interceptors.response.use(
             });
         }
       });
-    } else if (res.code !== 0 && res.code !== 1) {
+    }else if(res.code==0||res.status=="ok") {
+      return res;
+    }
+     else if (res.code !== 0 ) {
       Message({
         message: res.message || "Error",
         type: "error",
         duration: 5 * 1000
       });
       return Promise.reject(new Error(res.message || "Error"));
-    } else {
-      return res;
-    }
+    } 
   },
   error => {
     console.log("err" + error); // for debug

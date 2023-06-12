@@ -30,7 +30,7 @@
         <el-avatar
           slot-scope="scope"
           size="medium"
-          :src="formatIcon(scope.row.icon)"
+          :src="scope.row.icon"
         ></el-avatar>
       </el-table-column>
 

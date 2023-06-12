@@ -31,7 +31,8 @@
             label="应用图标"
             prop="icon"
           >
-            <el-upload
+          <UpFile :show="show" @fileList="getFileList" :filetype="filetype"></UpFile>
+            <!-- <el-upload
               class="avatar-uploader"
               :action="$APIURL+'v1/developer/uplaod'"
               :data="uplaodData"
@@ -40,7 +41,7 @@
               :before-upload="beforeAvatarUpload">
               <img v-if="postForm.icon" :src="$IMGURL+postForm.icon" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            </el-upload> -->
           </el-form-item>
           <el-form-item
             label="发行量"
@@ -48,7 +49,7 @@
           >
             <el-input
               v-model="postForm.quantityLimit"
-              placeholder="必须为整数，后三位系统自动转化为小数"
+              placeholder="必须为整数，后五位系统自动转化为小数"
             ></el-input>
           </el-form-item>
           <el-form-item
@@ -91,7 +92,7 @@
 import Warning from '@/components/Warning/index'
 import {generateToken} from '@/api/token'
 import { mapGetters } from "vuex";
-
+import UpFile from "@/components/UpFile/index.vue"
 const defaultForm = {
   name: '',
   symbol: '', // 文章题目
@@ -104,7 +105,7 @@ const defaultForm = {
 
 export default {
   name: 'ApplyForm',
-  components: {  Warning },
+  components: { Warning,UpFile },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === '') {
@@ -119,6 +120,8 @@ export default {
     }
 
     return {
+      show:true,
+  filetype: ['image/*',  'img/*'],
       postForm: Object.assign({}, defaultForm),
       rules: {
         name: [{ validator: validateRequire , trigger: 'blur'}],
@@ -136,6 +139,9 @@ export default {
     ...mapGetters(["developerInfo","uid"]),
   },
   methods: {
+    getFileList(e){
+        this.postForm.icon=e[0]
+      },
     submitForm() {
       if(this.developerInfo == null || this.developerInfo.developer.status != 1){
         this.$notify({

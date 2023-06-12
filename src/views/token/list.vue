@@ -32,7 +32,7 @@
         <el-avatar
           slot-scope="scope"
           size="medium"
-          :src="formatIcon(scope.row.icon)"
+          :src="scope.row.icon"
         ></el-avatar>
       </el-table-column>
 
@@ -148,7 +148,8 @@
       formatQuantity(quantit){  
         let s = quantit.toString();
         let l = s.length;
-        return s.substr(0,l-3)+"."+s.substr(l-3)
+        // return s.substr(0,l-5)+"."+s.substr(l-5)
+        return s/100000
       }
     }
   }

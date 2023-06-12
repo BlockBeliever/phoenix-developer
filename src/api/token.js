@@ -40,3 +40,11 @@ export function issueToken(data) {
   });
 }
 
+export function getUpInfo(data) {
+  return request({
+    url: "/v1/dapp/upload/apply",
+    method: "post",
+    data: data
+  });
+}
+

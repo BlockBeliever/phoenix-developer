@@ -24,7 +24,8 @@
           </el-form-item>
 
           <el-form-item label="应用图标" prop="icon">
-            <el-upload
+            <UpFile :show="show" @fileList="getFileList" :filetype="filetype"></UpFile>
+            <!-- <el-upload
               class="avatar-uploader"
               :action="$APIURL+'v1/developer/uplaod'"
               :data="uplaodData"
@@ -33,7 +34,7 @@
               :before-upload="beforeAvatarUpload">
               <img v-if="postForm.icon" :src="$IMGURL+postForm.icon" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            </el-upload> -->
           </el-form-item>
           <el-form-item label="应用URL" prop="domain">
             <el-input
@@ -71,18 +72,13 @@
 </template>
 
 <script>
+import UpFile from "@/components/UpFile/index.vue"
 import Warning from "@/components/Warning/index";
 import { appleyDapp } from "@/api/developer";
 import { mapGetters } from "vuex";
 
 const defaultForm = {
-  // name: "六合彩",
-  // symbol: "liuhecai",
-  // icon: "/images/bit.jpg",
-  // intro: "言论自由，法律公正，普及知识",
-  // comment: "测试创建一个公平的环境",
-  // domain: "http://192.168.1.181:9527/",
-  // callbackUrl: "http://192.168.1.181:9527/callback"
+ 
   name: "",
   symbol: "",
   icon: "",
@@ -94,7 +90,7 @@ const defaultForm = {
 
 export default {
   name: "ApplyForm",
-  components: { Warning },
+  components: { Warning,UpFile },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === "") {
@@ -109,6 +105,8 @@ export default {
     };
 
     return {
+      show:true,
+  filetype: ['image/*',  'img/*'],
       postForm: Object.assign({}, defaultForm),
       rules: {
         name: [{ validator: validateRequire, trigger: "blur" }],
@@ -126,6 +124,12 @@ export default {
     ...mapGetters(["developerInfo","uid"])
   },
   methods: {
+    getFileList(e){
+      console.log(e,888)
+        this.postForm.icon=e[0]
+        // console.log(this.postForm)
+        // this.fileList2=e
+      },
     submitForm() {
       if (
         this.developerInfo == null ||
