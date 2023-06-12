@@ -21,7 +21,7 @@
 <script>
 import vueQr from 'vue-qr'
 import { MessageBox } from 'element-ui'
-
+import request from "@/utils/reques1"
 import { preLogin, login } from '@/api/user'
 
 export default {
@@ -97,7 +97,9 @@ export default {
           location.reload()
         })
       }
-      login(this.preLogin.uuid).then((res) => {
+      request({ url: "/v1/developer/loop-login",
+      method: "post",
+    data:{uuid: this.preLogin.uuid}}).then((res) => {
         if (res.code === 0) {
           clearInterval(this.timer)
            // 保存信息到store 和 存储
