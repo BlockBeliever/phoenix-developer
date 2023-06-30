@@ -99,30 +99,29 @@ export default {
       }
       request({ url: "/v1/developer/loop-login",
       method: "post",
-    data:{uuid: this.preLogin.uuid}}).then((res) => {
-        if (res.code === 0) {
-          clearInterval(this.timer)
-           // 保存信息到store 和 存储
-           this.loading = true
-          this.$confirm('是否登录?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          
-          this.$store.dispatch('user/login', res.data)
-          this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-          // this.loading = false
-         
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          });  
-          location. reload()        
-        });
-         
-          
+        data:{uuid: this.preLogin.uuid}}).then((res) => {
+            if (res.code === 0) {
+              clearInterval(this.timer)
+              // 保存信息到store 和 存储
+              this.loading = true
+              this.$confirm('是否登录?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              
+              this.$store.dispatch('user/login', res.data)
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              // this.loading = false
+            
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消'
+              });  
+              location. reload()        
+            });
+
         }else if(res.message=="您已经被禁止登录"){
           this.$confirm('您账户已被禁用', '提示', {
           confirmButtonText: '确定',

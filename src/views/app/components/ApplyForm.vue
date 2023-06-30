@@ -125,7 +125,6 @@ export default {
   },
   methods: {
     getFileList(e){
-      console.log(e,888)
         this.postForm.icon=e[0]
         // console.log(this.postForm)
         // this.fileList2=e

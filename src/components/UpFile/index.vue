@@ -102,7 +102,10 @@ export default {
               }).then(res=>{
                 if(res.status=="ok"){
                   this.fileList = [];
-                  this.fileList.push(res.data.url)
+                  let arr=this.info.url.split("/")
+                  arr.splice(-1,1)
+                  let url=arr[0]+"//"+arr[2]+res.data.src
+                  this.fileList.push(url)
                   this.$emit("fileList", this.fileList);
                 }
               
