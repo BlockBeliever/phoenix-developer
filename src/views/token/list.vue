@@ -32,7 +32,7 @@
         <el-avatar
           slot-scope="scope"
           size="medium"
-          :src="scope.row.icon"
+          :src="cover(scope.row.icon)"
         ></el-avatar>
       </el-table-column>
 
@@ -122,6 +122,18 @@
       })
     },
     methods:{
+      cover(val){
+			let arr=val.split("/")
+			if(arr[0]=="http:"||arr[0]=="https:"){
+				return val
+			}else{
+				if(val.indexOf("thumb2.jpg") != -1){
+				    return this.$IMGURL+'/'+val
+				}else{
+				    return this.$IMGURL+val
+				}
+			}
+		},
       indexMethod(index){
          return index + 1;
       },
