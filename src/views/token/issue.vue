@@ -22,7 +22,7 @@
           <el-form-item label="发行量" prop="quantity">
             <el-input
               v-model="postForm.quantity"
-              placeholder="必须为整数，后三位系统自动转化为小数"
+              placeholder="必须为整数，后五位系统自动转化为小数"
             ></el-input>
           </el-form-item>
 

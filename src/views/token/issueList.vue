@@ -106,13 +106,22 @@ export default {
           break;
       }
     },
-    formatIcon(icon) {
-      return this.$IMGURL + icon;
+    formatIcon(val) {
+      let arr=val.split("/")
+			if(arr[0]=="http:"||arr[0]=="https:"){
+				return val
+			}else{
+				if(val.indexOf("thumb2.jpg") != -1){
+				    return this.$IMGURL+'/'+val
+				}else{
+				    return this.$IMGURL+val
+				}
+			}
     },
     formatQuantity(quantit) {
       let s = quantit.toString();
       let l = s.length;
-      return s.substr(0, l - 3) + "." + s.substr(l - 3);
+      return s.substr(0, l - 5) + "." + s.substr(l - 5);
     },
     approve(id, status) {
       var id = parseInt(id);
