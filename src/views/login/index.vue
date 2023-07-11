@@ -22,7 +22,7 @@
 import vueQr from 'vue-qr'
 import { MessageBox } from 'element-ui'
 import request from "@/utils/reques1"
-import { preLogin, login } from '@/api/user'
+import { preLogin, login,systemConfig } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -83,7 +83,11 @@ export default {
     clearInterval(this.timer)
   },
   methods: {
-
+    getConfigSystem(){
+      systemConfig().then((res)=>{
+        localStorage.setItem('setConfig', res.data.file_get)
+      })
+    },
     handleLogin() {
       var now = Date.parse(new Date())
       if (now > this.preLogin.createTime * 1000 + 180 * 1000) {
@@ -109,7 +113,7 @@ export default {
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              
+              this.getConfigSystem()
               this.$store.dispatch('user/login', res.data)
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               // this.loading = false

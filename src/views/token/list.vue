@@ -32,8 +32,9 @@
         <el-avatar
           slot-scope="scope"
           size="medium"
-          :src="cover(scope.row.icon)"
+          :src="$common.covers(scope.row.icon)"
         ></el-avatar>
+        <!-- <template slot-scope="scope">{{$common.covers(scope.row.icon) }}</template> -->
       </el-table-column>
 
       <el-table-column

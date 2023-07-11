@@ -44,3 +44,11 @@ export function refreshToken() {
     });
   }
 }
+
+export function systemConfig(data) {
+  return request({
+    url: "/v1/system-config",
+    method: "post",
+    data: data
+  });
+}

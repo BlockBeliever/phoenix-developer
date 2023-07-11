@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     getFileList(e){
-        this.postForm.icon=e[0]
+        this.postForm.icon=e
       },
     submitForm() {
       if(this.developerInfo == null || this.developerInfo.developer.status != 1){
