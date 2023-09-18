@@ -69,8 +69,8 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token)
-        .then(() => {
+      // logout(state.token)
+      //   .then(() => {
           commit("SET_TOKEN", "");
           commit("SET_ROLES", []);
           removeToken();
@@ -80,10 +80,10 @@ const actions = {
           // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
           dispatch("tagsView/delAllViews", null, { root: true });
           resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
+        // })
+        // .catch(error => {
+        //   reject(error);
+        // });
     });
   },
 
