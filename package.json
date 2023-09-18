@@ -16,6 +16,7 @@
     "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
+    "@uppy/tus": "^3.2.0",
     "@uppy/core": "^3.2.0",
     "@uppy/dashboard": "^3.4.0",
     "@uppy/drag-drop": "^3.0.2",
@@ -112,5 +113,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PanJiaChen/vue-element-admin.git"
+  },
+  "resolutions": {
+    "p-queue": "7.3.4"
   }
 }
