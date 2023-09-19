@@ -20,7 +20,7 @@
     "@uppy/dashboard": "^3.4.0",
     "@uppy/drag-drop": "^3.0.2",
     "@uppy/progress-bar": "^3.0.2",
-    "@uppy/tus": "^3.2.0",
+    "@uppy/tus": "^3.3.0",
     "@uppy/vue": "^1.0.2",
     "@uppy/webcam": "^3.3.1",
     "axios": "0.18.1",
@@ -113,8 +113,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PanJiaChen/vue-element-admin.git"
-  },
-  "resolutions": {
-    "p-queue": "7.3.4"
   }
 }
