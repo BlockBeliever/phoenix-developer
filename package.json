@@ -16,7 +16,6 @@
     "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^1.15.1",
     "@toast-ui/editor-plugin-color-syntax": "^1.0.1",
     "@toast-ui/vue-editor": "^2.5.1",
     "@uppy/core": "^3.2.0",
