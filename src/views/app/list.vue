@@ -30,7 +30,7 @@
         <el-avatar
           slot-scope="scope"
           size="medium"
-          :src="$common.covers(scope.row.icon)" 
+          :src="scope.row.base64Url" 
         ></el-avatar>
       </el-table-column>
 
@@ -155,6 +155,7 @@
 </template>
 
 <script>
+import { urlToBase64OfList } from "@/utils/EnAndDeFile";
 import { getDapps, publishDapp,tokenDel,tokenDown } from "@/api/developer";
 
 export default {
@@ -164,12 +165,11 @@ export default {
     };
   },
   async created() {
-    console.log("ceshi");
-    getDapps()
-      .then(res => {
-        console.log(res);
+      getDapps()
+      .then(async res => {
+        // console.log(res);
         if (res.code == 0) {
-          this.tableData = res.data;
+          this.tableData =  await urlToBase64OfList(res.data, 'icon')
         }
       })
       .catch(err => {

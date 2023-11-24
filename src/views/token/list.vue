@@ -32,7 +32,7 @@
         <el-avatar
           slot-scope="scope"
           size="medium"
-          :src="$common.covers(scope.row.icon)"
+          :src="scope.row.base64Url"
         ></el-avatar>
         <!-- <template slot-scope="scope">{{$common.covers(scope.row.icon) }}</template> -->
       </el-table-column>
@@ -105,7 +105,7 @@
 
 <script>
   import {getTokens} from '@/api/token'
-
+  import { urlToBase64OfList } from "@/utils/EnAndDeFile";
   export default {
     data() {
       return {
@@ -113,10 +113,10 @@
       }
     },
     async created(){  
-      getTokens().then((res)=>{
+      getTokens().then(async (res)=>{
          console.log(res);
         if(res.code == 0){
-          this.tableData = res.data
+          this.tableData =  await urlToBase64OfList(res.data, 'icon')
         }
       }).catch((err)=>{
         console.log(err);
