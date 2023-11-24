@@ -48,3 +48,11 @@ export function getUpInfo(data) {
   });
 }
 
+// 申请腾讯COS临时秘钥
+export function getTencentSign(data) {
+  return request({
+    url: '/v1/dapp/upload/get-tencent-token',
+    method: 'POST',
+    data
+  })
+}

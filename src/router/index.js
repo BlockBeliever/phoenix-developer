@@ -109,7 +109,7 @@ export const asyncRoutes = [
   developerRouter[0],
   developerRouter[1],
   developerRouter[2],
-  developerRouter[3],
+  // developerRouter[3],
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true }

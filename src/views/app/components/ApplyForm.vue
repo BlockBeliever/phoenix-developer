@@ -24,7 +24,8 @@
           </el-form-item>
 
           <el-form-item label="应用图标" prop="icon">
-            <UpFile :show="show" @fileList="getFileList" :filetype="filetype"></UpFile>
+            <TcUpload :type="'listType'" ref="imageRef" :accept="'image/*'" :imageUrl="'null'" :uploadPath="'developer/apply/'" @success="upSuccess"/>
+            <!-- <UpFile :show="show" @fileList="getFileList" :filetype="filetype"></UpFile> -->
             <!-- <el-upload
               class="avatar-uploader"
               :action="$APIURL+'v1/developer/uplaod'"
@@ -72,7 +73,8 @@
 </template>
 
 <script>
-import UpFile from "@/components/UpFile/index.vue"
+import TcUpload from '@/components/TcUpload'
+
 import Warning from "@/components/Warning/index";
 import { appleyDapp } from "@/api/developer";
 import { mapGetters } from "vuex";
@@ -90,7 +92,7 @@ const defaultForm = {
 
 export default {
   name: "ApplyForm",
-  components: { Warning,UpFile },
+  components: { Warning,TcUpload },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === "") {
@@ -124,6 +126,13 @@ export default {
     ...mapGetters(["developerInfo","uid"])
   },
   methods: {
+    upSuccess(val) {
+      if(val.length > 0){
+        this.postForm.icon=val[0].url
+      }else{
+        this.postForm.icon=""
+      }
+    },
     getFileList(e){
         this.postForm.icon=e
         // console.log(this.postForm)

@@ -31,7 +31,8 @@
             label="应用图标"
             prop="icon"
           >
-          <UpFile :show="show" @fileList="getFileList" :filetype="filetype"></UpFile>
+          <TcUpload :type="'listType'" ref="imageRef" :accept="'image/*'" :imageUrl="'null'" :uploadPath="'developer/apply/'" @success="upSuccess"/>
+          <!-- <UpFile :show="show" @fileList="getFileList" :filetype="filetype"></UpFile> -->
             <!-- <el-upload
               class="avatar-uploader"
               :action="$APIURL+'v1/developer/uplaod'"
@@ -92,7 +93,7 @@
 import Warning from '@/components/Warning/index'
 import {generateToken} from '@/api/token'
 import { mapGetters } from "vuex";
-import UpFile from "@/components/UpFile/index.vue"
+import TcUpload from '@/components/TcUpload'
 const defaultForm = {
   name: '',
   symbol: '', // 文章题目
@@ -105,7 +106,7 @@ const defaultForm = {
 
 export default {
   name: 'ApplyForm',
-  components: { Warning,UpFile },
+  components: { Warning,TcUpload },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === '') {
@@ -139,9 +140,16 @@ export default {
     ...mapGetters(["developerInfo","uid"]),
   },
   methods: {
-    getFileList(e){
-        this.postForm.icon=e
-      },
+    upSuccess(val) {
+      if(val.length > 0){
+        this.postForm.icon=val[0].url
+      }else{
+        this.postForm.icon=""
+      }
+    },
+    // getFileList(e){
+    //     this.postForm.icon=e
+    //   },
     submitForm() {
       if(this.developerInfo == null || this.developerInfo.developer.status != 1){
         this.$notify({
