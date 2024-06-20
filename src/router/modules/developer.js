@@ -52,7 +52,7 @@ const developRouter = [
       {
         path: "menber",
         component: () => import("@/views/app/menber"),
-        name: "TokenMenberList",
+        name: "AppTokenMenberList",
         hidden: true,
         meta: { title: "代币用户", noCache: true } // 代币分布情况
       },
@@ -111,21 +111,21 @@ const developRouter = [
       {
         path: "flow",
         component: () => import("@/views/token/flow"),
-        name: "TokenFlowList",
+        name: "TokenFlow",
         hidden: true,
         meta: { title: "代币流水", noCache: true } // 代币分布情况
       },
       {
         path: "issue",
         component: () => import("@/views/token/issue"),
-        name: "TokenFlowList",
+        name: "TokenIssue",
         hidden: true,
         meta: { title: "增发代币", noCache: true } // 代币分布情况
       },
       {
         path: "issue-list",
         component: () => import("@/views/token/issueList"),
-        name: "TokenFlowList",
+        name: "TokenIssueList",
         hidden: true,
         meta: { title: "审核增发", noCache: true } // 代币分布情况
       }

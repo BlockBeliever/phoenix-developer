@@ -24,18 +24,14 @@
           </el-form-item>
 
           <el-form-item label="应用图标" prop="icon">
-            <TcUpload :type="'listType'" ref="imageRef" :accept="'image/*'" :imageUrl="'null'" :uploadPath="'developer/apply/'" @success="upSuccess"/>
-            <!-- <UpFile :show="show" @fileList="getFileList" :filetype="filetype"></UpFile> -->
-            <!-- <el-upload
-              class="avatar-uploader"
-              :action="$APIURL+'v1/developer/uplaod'"
-              :data="uplaodData"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img v-if="postForm.icon" :src="$IMGURL+postForm.icon" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload> -->
+            <TcUpload
+              ref="imageRef"
+              :type="'listType'"
+              :accept="'image/*'"
+              :imageUrl="'null'"
+              :uploadPath="'developer/apply/'"
+              @success="upSuccess"
+            />
           </el-form-item>
           <el-form-item label="应用URL" prop="domain">
             <el-input
@@ -73,42 +69,39 @@
 </template>
 
 <script>
-import TcUpload from '@/components/TcUpload'
-
+import TcUpload from "@/components/TcUpload";
 import Warning from "@/components/Warning/index";
 import { appleyDapp } from "@/api/developer";
 import { mapGetters } from "vuex";
 
 const defaultForm = {
- 
   name: "",
   symbol: "",
   icon: "",
   intro: "",
   comment: "",
   domain: "",
-  callbackUrl: ""
+  callbackUrl: "",
 };
 
 export default {
   name: "ApplyForm",
-  components: { Warning,TcUpload },
+  components: { Warning, TcUpload },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === "") {
         this.$message({
           message: rule.field + "为必传项",
-          type: "error"
+          type: "error",
         });
         callback(new Error(rule.field + "为必传项"));
       } else {
         callback();
       }
     };
-
     return {
-      show:true,
-  filetype: ['image/*',  'img/*'],
+      show: true,
+      filetype: ["image/*", "img/*"],
       postForm: Object.assign({}, defaultForm),
       rules: {
         name: [{ validator: validateRequire, trigger: "blur" }],
@@ -117,27 +110,22 @@ export default {
         intro: [{ validator: validateRequire, trigger: "blur" }],
         comment: [{ validator: validateRequire, trigger: "blur" }],
         domain: [{ validator: validateRequire, trigger: "blur" }],
-        callbackUrl: [{ validator: validateRequire, trigger: "blur" }]
+        callbackUrl: [{ validator: validateRequire, trigger: "blur" }],
       },
-      uplaodData:{"type":"dapp"}
+      uplaodData: { type: "dapp" },
     };
   },
   computed: {
-    ...mapGetters(["developerInfo","uid"])
+    ...mapGetters(["developerInfo", "uid"]),
   },
   methods: {
     upSuccess(val) {
-      if(val.length > 0){
-        this.postForm.icon=val[0].url
-      }else{
-        this.postForm.icon=""
+      if (val.length > 0) {
+        this.postForm.icon = val[0].url;
+      } else {
+        this.postForm.icon = "";
       }
     },
-    getFileList(e){
-        this.postForm.icon=e
-        // console.log(this.postForm)
-        // this.fileList2=e
-      },
     submitForm() {
       if (
         this.developerInfo == null ||
@@ -147,19 +135,19 @@ export default {
           title: "失败",
           message: "您还不是开发者，不能开发dapp",
           type: "error",
-          duration: 2000
+          duration: 2000,
         });
         return;
       }
-      this.$refs.postForm.validate(valid => {
+      this.$refs.postForm.validate((valid) => {
         if (valid) {
-          appleyDapp(this.postForm).then(res => {
+          appleyDapp(this.postForm).then((res) => {
             if (res.code == 0) {
               this.$notify({
                 title: "成功",
                 message: "申请成功，等待审核",
                 type: "success",
-                duration: 2000
+                duration: 2000,
               });
               this.$router.push({ path: "/app/list" });
             } else {
@@ -167,7 +155,7 @@ export default {
                 title: "成功",
                 message: res.message,
                 type: "error",
-                duration: 2000
+                duration: 2000,
               });
             }
           });
@@ -177,25 +165,7 @@ export default {
         }
       });
     },
-    handleAvatarSuccess(res, file){
-      if(res["code"] == 0 && res["data"] != null){
-        this.postForm.icon = res["data"]
-      }else{
-        this.$message.error('上传失败，请重试!');
-      }
-    },
-    beforeAvatarUpload(file){
-      if(this.uid == null || this.uid <= 0){
-          this.$message.error('您未登陆!');
-      }
-      const isLt2M = file.size / 1024 / 1024 < 0.5;
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 0.5MB!');
-      }
-      this.uplaodData.uid = this.uid;
-      console.log("上传前");
-    }
-  }
+  },
 };
 </script>
 
@@ -206,7 +176,7 @@ export default {
   position: relative;
   width: 600px;
 
-   .avatar-uploader .el-upload {
+  .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
@@ -214,7 +184,7 @@ export default {
     overflow: hidden;
   }
   .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
+    border-color: #409eff;
   }
   .avatar-uploader-icon {
     font-size: 28px;

@@ -1,10 +1,6 @@
 <template>
   <div class="container">
-    <el-table
-      :data="tableData"
-      border
-      style="width: 100%"
-    >
+    <el-table :data="tableData" border style="width: 100%">
       <el-table-column
         type="index"
         label="序号"
@@ -13,76 +9,45 @@
         50"
       >
       </el-table-column>
-      <el-table-column
-        prop="name"
-        label="名称"
-      > </el-table-column>
+      <el-table-column prop="name" label="名称"> </el-table-column>
 
-      <el-table-column
-        prop="symbol"
-        label="英文名称"
-      > </el-table-column>
+      <el-table-column prop="symbol" label="英文名称"> </el-table-column>
 
-      <el-table-column
-        prop="icon"
-        label="图标"
-      >
+      <el-table-column prop="icon" label="图标">
         <el-avatar
           slot-scope="scope"
           size="medium"
-          :src="scope.row.base64Url" 
+          :src="scope.row.base64Url"
         ></el-avatar>
       </el-table-column>
 
-      <el-table-column
-        prop="domain"
-        label="URL"
-      > </el-table-column>
+      <el-table-column prop="domain" label="URL"> </el-table-column>
 
-      <el-table-column
-        prop="callbackUrl"
-        label="回调URL"
-      > </el-table-column>
+      <el-table-column prop="callbackUrl" label="回调URL"> </el-table-column>
 
-      <el-table-column
-        prop="status"
-        label="状态"
-      >
+      <el-table-column prop="status" label="状态">
         <template slot-scope="scope">{{
           formatStatus(scope.row.status)
         }}</template>
       </el-table-column>
-      <el-table-column
-        prop="isPublish"
-        label="是否发布"
-      >
+      <el-table-column prop="isPublish" label="是否发布">
         <template slot-scope="scope">{{
           formatPublish(scope.row.isPublish)
         }}</template>
       </el-table-column>
 
-      <el-table-column
-        prop="createTime"
-        label="创建时间"
-      >
+      <el-table-column prop="createTime" label="创建时间">
         <template slot-scope="scope">{{
           scope.row.createTime | formatTimestamp
         }}</template>
       </el-table-column>
-      <el-table-column
-        prop="approveTime"
-        label="审核时间"
-      >
+      <el-table-column prop="approveTime" label="审核时间">
         <template slot-scope="scope">{{
           scope.row.approveTime | formatTimestamp
         }}</template>
       </el-table-column>
 
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="140"
-      >
+      <el-table-column fixed="right" label="操作" width="140">
         <template slot-scope="scope">
           <!-- <router-link
             :to="'/app/edit?id=' + scope.row.id"
@@ -110,22 +75,17 @@
           >
             下架
           </span>
-          <span
-            class="action"
-            @click="delToken(scope.row.id)"
-          >
-            删除
-          </span>
+          <span class="action" @click="delToken(scope.row.id)"> 删除 </span>
           <br />
-         
+
           <router-link
             :to="
               '/app/pay?id=' +
-                scope.row.id +
-                '&n=' +
-                scope.row.name +
-                '&e=' +
-                scope.row.symbol
+              scope.row.id +
+              '&n=' +
+              scope.row.name +
+              '&e=' +
+              scope.row.symbol
             "
             class="action"
             v-if="scope.row.status == 1"
@@ -135,13 +95,13 @@
           <router-link
             :to="
               '/app/develop-info?client=' +
-                scope.row.clientId +
-                '&n=' +
-                scope.row.name +
-                '&e=' +
-                scope.row.symbol+
-                '&dappId=' +
-                scope.row.id
+              scope.row.clientId +
+              '&n=' +
+              scope.row.name +
+              '&e=' +
+              scope.row.symbol +
+              '&dappId=' +
+              scope.row.id
             "
             class="action"
             v-if="scope.row.status == 1"
@@ -156,49 +116,50 @@
 
 <script>
 import { urlToBase64OfList } from "@/utils/EnAndDeFile";
-import { getDapps, publishDapp,tokenDel,tokenDown } from "@/api/developer";
+import { getDapps, publishDapp, tokenDel, tokenDown } from "@/api/developer";
 
 export default {
   data() {
     return {
-      tableData: []
+      tableData: [],
     };
   },
   async created() {
-      getDapps()
-      .then(async res => {
-        // console.log(res);
+    getDapps()
+      .then(async (res) => {
         if (res.code == 0) {
-          this.tableData =  await urlToBase64OfList(res.data, 'icon')
+          res.data
+            ? (this.tableData = await urlToBase64OfList(res.data, "icon"))
+            : [];
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   },
   methods: {
-    cover(val){
-			let arr=val.split("/")
-			if(arr[0]=="http:"||arr[0]=="https:"){
-				return val
-			}else{
-				if(val.indexOf("thumb2.jpg") != -1){
-				    return this.$IMGURL+'/'+val
-				}else{
-				    return this.$IMGURL+val
-				}
-			}
-		},
-    downToken(id){
-      tokenDown({id:id}).then(res => {
+    cover(val) {
+      let arr = val.split("/");
+      if (arr[0] == "http:" || arr[0] == "https:") {
+        return val;
+      } else {
+        if (val.indexOf("thumb2.jpg") != -1) {
+          return this.$IMGURL + "/" + val;
+        } else {
+          return this.$IMGURL + val;
+        }
+      }
+    },
+    downToken(id) {
+      tokenDown({ id: id }).then((res) => {
         if (res.code == 0) {
           this.$notify({
             title: "成功",
             message: "下架成功",
             type: "success",
-            duration: 2000
+            duration: 2000,
           });
-          setTimeout(function() {
+          setTimeout(function () {
             window.location.reload();
           }, 2000);
         } else {
@@ -206,21 +167,21 @@ export default {
             title: "下架失败",
             message: res.message,
             type: "error",
-            duration: 2000
+            duration: 2000,
           });
         }
       });
     },
-    delToken(id){
-      tokenDel({id:id}).then(res => {
+    delToken(id) {
+      tokenDel({ id: id }).then((res) => {
         if (res.code == 0) {
           this.$notify({
             title: "成功",
             message: "删除成功",
             type: "success",
-            duration: 2000
+            duration: 2000,
           });
-          setTimeout(function() {
+          setTimeout(function () {
             window.location.reload();
           }, 2000);
         } else {
@@ -228,7 +189,7 @@ export default {
             title: "删除失败",
             message: res.message,
             type: "error",
-            duration: 2000
+            duration: 2000,
           });
         }
       });
@@ -279,15 +240,15 @@ export default {
     },
     publish(id) {
       var id = parseInt(id);
-      publishDapp(id).then(res => {
+      publishDapp(id).then((res) => {
         if (res.code == 0) {
           this.$notify({
             title: "成功",
             message: "审核成功",
             type: "success",
-            duration: 2000
+            duration: 2000,
           });
-          setTimeout(function() {
+          setTimeout(function () {
             window.location.reload();
           }, 2000);
         } else {
@@ -295,12 +256,12 @@ export default {
             title: "失败",
             message: res.message,
             type: "error",
-            duration: 2000
+            duration: 2000,
           });
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
