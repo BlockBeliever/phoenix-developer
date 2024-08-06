@@ -1,58 +1,37 @@
 <template>
   <div class="createPost-container">
-    <el-form
-      ref="postForm"
-      :model="postForm"
-      :rules="rules"
-      class="form-container"
-      label-width="100px"
-    >
+    <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container" label-width="100px">
       <div class="createPost-main-container">
-        <el-row
-          v-if="developerInfo == null || developerInfo.developer.status != 1"
-        >
+        <el-row v-if="developerInfo == null || developerInfo.developer.status != 1">
           <Warning />
         </el-row>
-
         <el-row>
           <el-form-item label="名称" prop="name">
             <el-input v-model="postForm.name"></el-input>
           </el-form-item>
-
           <el-form-item label="英文标示" prop="symbol">
             <el-input v-model="postForm.symbol"></el-input>
           </el-form-item>
           <el-form-item label="应用图标" prop="icon">
-            <TcUpload
-              ref="imageRef"
-              :type="'listType'"
-              :accept="'image/*'"
-              :imageUrl="'null'"
-              :uploadPath="'developer/apply/'"
-              @success="upSuccess"
-            />
+            <TcUpload ref="imageRef" :type="'listType'" :accept="'image/*'" :imageUrl="'null'"
+              :uploadPath="'developer/apply/'" @success="upSuccess" />
           </el-form-item>
           <el-form-item label="发行量" prop="quantityLimit">
-            <el-input
-              v-model="postForm.quantityLimit"
-              placeholder="必须为整数，后五位系统自动转化为小数"
-            ></el-input>
+            <el-input v-model="postForm.quantityLimit" placeholder="必须为整数，后五位系统自动转化为小数"></el-input>
           </el-form-item>
           <el-form-item label="管理用户" prop="issueUsername">
             <el-input v-model="postForm.issueUsername"></el-input>
           </el-form-item>
-          <el-form-item label="代币官网" prop="website">
+          <!-- <el-form-item label="代币官网" prop="website">
             <el-input v-model="postForm.website"></el-input>
+          </el-form-item> -->
+          <el-form-item label="合约地址" prop="token_address">
+            <el-input v-model="postForm.token_address"></el-input>
           </el-form-item>
           <el-form-item label="发行说明" prop="comment">
-            <el-input
-              type="textarea"
-              :rows="5"
-              v-model="postForm.comment"
-            ></el-input>
+            <el-input type="textarea" :rows="5" v-model="postForm.comment"></el-input>
           </el-form-item>
         </el-row>
-
         <el-form-item>
           <el-button type="primary" @click="submitForm">立即申请</el-button>
         </el-form-item>
@@ -68,12 +47,13 @@ import { mapGetters } from "vuex";
 import TcUpload from "@/components/TcUpload";
 const defaultForm = {
   name: "",
-  symbol: "", // 文章题目
-  icon: "", // 文章内容
-  website: "", // 文章摘要
-  comment: "", // 文章摘要
-  issueUsername: "", // 文章外链
-  quantityLimit: "", // 文章图片
+  symbol: "", // 英文标示
+  icon: "", // 应用图标
+  // website: "", // 代币官网
+  token_address: "", // 合约地址
+  comment: "", // 发行说明
+  issueUsername: "", // 管理用户
+  quantityLimit: "", // 发行量
 };
 
 export default {
@@ -99,7 +79,8 @@ export default {
         name: [{ validator: validateRequire, trigger: "blur" }],
         symbol: [{ validator: validateRequire, trigger: "blur" }],
         icon: [{ validator: validateRequire, trigger: "blur" }],
-        website: [{ validator: validateRequire, trigger: "blur" }],
+        // website: [{ validator: validateRequire, trigger: "blur" }],
+        token_address: [{ validator: validateRequire, trigger: "blur" }],
         comment: [{ validator: validateRequire, trigger: "blur" }],
         issueUsername: [{ validator: validateRequire, trigger: "blur" }],
         quantityLimit: [{ validator: validateRequire, trigger: "blur" }],
@@ -175,9 +156,11 @@ export default {
     position: relative;
     overflow: hidden;
   }
+
   .avatar-uploader .el-upload:hover {
     border-color: #409eff;
   }
+
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
@@ -186,6 +169,7 @@ export default {
     line-height: 60px;
     text-align: center;
   }
+
   .avatar {
     width: 60px;
     height: 60px;

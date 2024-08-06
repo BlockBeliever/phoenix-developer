@@ -1,24 +1,15 @@
 <template>
   <div class="container">
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column
-        type="index"
-        label="序号"
-        :index="indexMethod"
-        width="
-        50"
-      >
+    <el-table :data="tableData" v-loading="loading" border style="width: 100%">
+      <el-table-column type="index" label="序号" :index="indexMethod" width="
+        50">
       </el-table-column>
       <el-table-column prop="token_name" label="名称"> </el-table-column>
 
       <el-table-column prop="token_symbol" label="英文标示"> </el-table-column>
 
       <el-table-column prop="token_icon" label="图标">
-        <el-avatar
-          slot-scope="scope"
-          size="medium"
-          :src="formatIcon(scope.row.token_icon)"
-        ></el-avatar>
+        <el-avatar slot-scope="scope" size="medium" :src="scope.row.base64Url"></el-avatar>
       </el-table-column>
 
       <el-table-column prop="quantity" label="发行量">
@@ -66,24 +57,25 @@
 
 <script>
 import { getTokenIssues, approveIssues } from "@/api/token";
+import { urlToBase64OfList } from "@/utils/EnAndDeFile";
 
 export default {
   data() {
     return {
+      loading: false,
       tableData: []
     };
   },
   async created() {
-    var id = parseInt(this.$route.query.tokenId);
-    getTokenIssues(id)
-      .then(res => {
-        if (res.code == 0) {
-          this.tableData = res.data;
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.loading = true
+    const { code, data } = await getTokenIssues(parseInt(this.$route.query.tokenId))
+    this.loading = false
+    if (code !== 0) return
+    data && data.forEach(item => {
+      item.base64Url = ""
+    })
+    this.tableData = data || []
+    this.tableData = await urlToBase64OfList(data, "token_icon")
   },
   methods: {
     indexMethod(index) {
@@ -93,35 +85,16 @@ export default {
       switch (status) {
         case 0:
           return "审核中";
-          break;
         case 2:
           return "审核不通过";
-          break;
         case 1:
           return "审核通过";
-          break;
-
         default:
           return "审核中";
-          break;
       }
     },
-    formatIcon(val) {
-      let arr=val.split("/")
-			if(arr[0]=="http:"||arr[0]=="https:"){
-				return val
-			}else{
-				if(val.indexOf("thumb2.jpg") != -1){
-				    return this.$IMGURL+'/'+val
-				}else{
-				    return this.$IMGURL+val
-				}
-			}
-    },
     formatQuantity(quantit) {
-      let s = quantit.toString();
-      let l = s.length;
-      return s.substr(0, l - 5) + "." + s.substr(l - 5);
+      return (quantit / 100000).toString().replace(/\B(?=(\d{5})+(?!\d))/g, ",")
     },
     approve(id, status) {
       var id = parseInt(id);
@@ -133,7 +106,7 @@ export default {
             type: "success",
             duration: 2000
           });
-          setTimeout(function() {
+          setTimeout(function () {
             window.location.reload();
           }, 2000);
         } else {
@@ -152,11 +125,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
+
 .action {
   color: #1890ff;
   font-size: 12px;
   padding: 0 5px;
 }
+
 .action:hover {
   font-weight: bolder;
 }

@@ -98,7 +98,6 @@ const getFileFromUrl = (url, fileName) => {
 }
 
 export const urlToBase64OfList = async (list, key) => {
-  console.log(list,key)
   for (const item of list) {
     if (item[key] && item[key].includes('phoenixadmin')) {
       item.base64Url = await decryption(item[key])
