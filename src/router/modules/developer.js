@@ -178,7 +178,25 @@ const developRouter = [
         meta: { title: "推荐接口", noCache: true }
       }
     ]
-  }
+  },
+  {
+    path: "/development",
+    component: Layout,
+    redirect: "noRedirect",
+    name: "Development",
+    meta: {
+      title: "文档",
+      icon: "documentation"
+    },
+    children: [
+      {
+        path: "documentation",
+        component: () => import("@/views/development/documentation"),
+        name: "DevelopmentDocumentation",
+        meta: { title: "开发文档", noCache: true }
+      }
+    ]
+  },
 ];
 
 export default developRouter;

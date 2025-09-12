@@ -95,3 +95,35 @@ export function tokenDel(data) {
     data: data
   });
 }
+
+export function devDocFileList(data) {
+  return request({
+    url: "/v1/dapp/files-list",
+    method: "post",
+    data: data
+  });
+}
+
+export function devDocFileAdd(data) {
+  return request({
+    url: "/v1/dapp/files-create",
+    method: "post",
+    data: data
+  });
+}
+
+export function devDocFileEdit(data) {
+  return request({
+    url: "/v1/dapp/files-update",
+    method: "post",
+    data: data
+  });
+}
+
+export function devDocFileDel(data) {
+  return request({
+    url: "/v1/dapp/files-delete",
+    method: "post",
+    data: data
+  });
+}
