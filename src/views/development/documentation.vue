@@ -1,312 +1,60 @@
 <template>
   <div class="container">
-    <!-- Create Button -->
+    <!-- Header with download button -->
     <div class="header">
-      <el-button type="primary" @click="showCreateModal">创建文档</el-button>
+      <el-button type="primary" @click="downloadDocumentation">下载</el-button>
     </div>
 
-    <!-- Table -->
-    <el-table :data="tableData" border style="width: 100%" v-loading="isLoading">
-      <el-table-column type="index" label="序号" :index="indexMethod" width="50"></el-table-column>
-      <el-table-column prop="name" label="名称" width="200"></el-table-column>
-      <el-table-column prop="path" label="文件路径" width="600">
-        <template slot-scope="scope">
-          <a :href="scope.row.path" target="_blank">{{ scope.row.path }}</a>
-        </template>
-      </el-table-column>
-
-      <el-table-column prop="created_at" label="创建时间">
-        <template slot-scope="scope">{{
-          new Date(scope.row.created_at * 1000).toLocaleString('shanghai', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-          })
-        }}</template>
-      </el-table-column>
-
-      <el-table-column fixed="right" label="操作" width="140">
-        <template slot-scope="scope">
-            <!-- <span class="action" @click="editFile(scope.row)">编辑</span> -->
-            <!-- <span class="action" style="color: red;" @click="delFile(scope.row.id)">删除</span> -->
-          <el-button type="danger" size="mini" @click="delFile(scope.row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- Create/Edit Modal -->
-    <el-dialog
-      :key="modalKey"
-      :title="isEdit ? '编辑文档' : '创建文档'"
-      :visible.sync="dialogVisible"
-      width="600px"
-      @close="closeDialog"
-    >
-      <el-form
-        ref="docForm"
-        :model="docForm"
-        :rules="rules"
-        label-width="100px"
-      >
-        <el-form-item label="文档名称" prop="name">
-          <el-input v-model="docForm.name" placeholder="请输入文档名称"></el-input>
-        </el-form-item>
-
-        <el-form-item label="文档文件" prop="file">
-          <TcUpload
-            :key="uploadKey"
-            ref="fileRef"
-            :type="'listType'"
-            :accept="'*/*'"
-            :imageUrl="docForm.path || 'null'"
-            :uploadPath="'developer/documentation/'"
-            @success="uploadSuccess"
-          />
-        </el-form-item>
-      </el-form>
-
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="closeDialog">取消</el-button>
-        <el-button type="primary" @click="submitForm">
-          {{ isEdit ? '更新' : '创建' }}
-        </el-button>
-      </div>
-    </el-dialog>
+    <!-- Documentation content -->
+    <div class="documentation-content" v-html="documentationHtml"></div>
   </div>
 </template>
 
 <script>
-import TcUpload from "@/components/TcUpload";
-import { devDocFileList, devDocFileDel, devDocFileAdd, devDocFileEdit } from "@/api/developer";
-
-const defaultForm = {
-  name: "",
-  path: "",
-};
-
 export default {
   name: 'DevelopmentDocumentation',
-  components: { TcUpload },
+  components: {},
   data() {
-    const validateRequire = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error(rule.field + "为必传项"));
-      } else {
-        callback();
-      }
-    };
-    
     return {
-      tableData: [],
-      total: 0,
-      isLoading: false,
-      dialogVisible: false,
-      isEdit: false,
-      docForm: Object.assign({}, defaultForm),
-      modalKey: 0, // Key for modal re-rendering
-      uploadKey: 0, // Key for upload component re-rendering
-      rules: {
-        name: [{ validator: validateRequire, trigger: "blur" }],
-        file: [{ validator: validateRequire, trigger: "blur" }],
-      },
+      documentationHtml: ''
     };
   },
-  async created() {
-    this.loadData();
+  async mounted() {
+    await this.loadDocumentation();
   },
   methods: {
-    async loadData() {
-      this.isLoading = true;
+    async loadDocumentation() {
       try {
-        const res = await devDocFileList({type: 'DEVELOPMENT_DOCUMENTATION'});
-        if (res.code == 0) {
-          this.tableData = res.data.records;
-          this.total = res.data.total;
+        // Use the correct path from public directory
+        const response = await fetch('/docs/DAPP_DOCUMENT.html');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      } catch (err) {
-        console.log(err);
-        this.$message.error("加载数据失败");
-      } finally {
-        this.isLoading = false;
+        this.documentationHtml = await response.text();
+        console.log('Documentation loaded successfully');
+      } catch (error) {
+        console.error('Failed to load documentation:', error);
+        this.$message.error('Failed to load documentation');
       }
     },
-
-    showCreateModal() {
-      this.isEdit = false;
-      this.docForm = Object.assign({}, JSON.parse(JSON.stringify(defaultForm)));
-      this.modalKey++; // Increment key to force modal re-render
-      this.uploadKey++; // Increment key to force upload component re-render
-      this.dialogVisible = true;
-      this.$nextTick(() => {
-        this.$refs.docForm && this.$refs.docForm.resetFields();
-      });
-    },
-
-    editFile(row) {
-      this.isEdit = true;
-      this.docForm = {
-        id: row.id,
-        name: row.name,
-        path: row.path,
-      };
-      this.modalKey++; // Increment key to force modal re-render
-      this.uploadKey++; // Increment key to force upload component re-render
-      this.dialogVisible = true;
+    downloadDocumentation() {
+      if (!this.documentationHtml) {
+        this.$message.warning('No content to download');
+        return;
+      }
       
-      this.$nextTick(() => {
-        this.$refs.docForm && this.$refs.docForm.resetFields();
-      });
-    },
-
-    closeDialog() {
-      this.dialogVisible = false;
-      this.docForm = Object.assign({}, JSON.parse(JSON.stringify(defaultForm)));
-      this.$nextTick(() => {
-        this.$refs.docForm && this.$refs.docForm.resetFields();
-      });
-    },
-
-    uploadSuccess(files) {
-      if (files.length > 0) {
-        this.docForm.path = files[0].url;
-      } else {
-        this.docForm.path = "";
-      }
-    },
-
-    submitForm() {
-      this.$refs.docForm.validate((valid) => {
-        if (valid) {
-          if (this.isEdit) {
-            this.updateFile();
-          } else {
-            this.createFile();
-          }
-        } else {
-          this.$message.error("请完善必填信息");
-          return false;
-        }
-      });
-    },
-
-    async createFile() {
-      try {
-        const data = {
-          type: 'DEVELOPMENT_DOCUMENTATION',
-          name: this.docForm.name,
-          path: this.docForm.path
-        };
-        
-        const res = await devDocFileAdd(data);
-        if (res.code == 0) {
-          this.$notify({
-            title: "成功",
-            message: "文档创建成功",
-            type: "success",
-            duration: 2000,
-          });
-          this.closeDialog();
-          this.loadData();
-        } else {
-          this.$notify({
-            title: "创建失败",
-            message: res.message,
-            type: "error",
-            duration: 2000,
-          });
-        }
-      } catch (error) {
-        this.$notify({
-          title: "创建失败",
-          message: "网络错误",
-          type: "error",
-          duration: 2000,
-        });
-      }
-    },
-
-    async updateFile() {
-      try {
-        const data = {
-          id: this.docForm.id,
-          type: 'DEVELOPMENT_DOCUMENTATION',
-          name: this.docForm.name,
-          path: this.docForm.path
-        };
-        
-        const res = await devDocFileEdit(data);
-        if (res.code == 0) {
-          this.$notify({
-            title: "成功",
-            message: "文档更新成功",
-            type: "success",
-            duration: 2000,
-          });
-          this.closeDialog();
-          this.loadData();
-        } else {
-          this.$notify({
-            title: "更新失败",
-            message: res.message,
-            type: "error",
-            duration: 2000,
-          });
-        }
-      } catch (error) {
-        this.$notify({
-          title: "更新失败",
-          message: "网络错误",
-          type: "error",
-          duration: 2000,
-        });
-      }
-    },
-
-    async delFile(id) {
-      try {
-        await this.$confirm('确定要删除这个文档吗？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        });
-
-        const res = await devDocFileDel({ id });
-        if (res.code == 0) {
-          this.$notify({
-            title: "成功",
-            message: "删除成功",
-            type: "success",
-            duration: 2000,
-          });
-          this.loadData();
-        } else {
-          this.$notify({
-            title: "删除失败",
-            message: res.message,
-            type: "error",
-            duration: 2000,
-          });
-        }
-      } catch (error) {
-        if (error !== 'cancel') {
-          this.$notify({
-            title: "删除失败",
-            message: "网络错误",
-            type: "error",
-            duration: 2000,
-          });
-        }
-      }
-    },
-
-    indexMethod(index) {
-      return index + 1;
-    },
-  },
+      // Create a blob with the HTML content
+      const blob = new Blob([this.documentationHtml], { type: 'text/html' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'DAPP_DOCUMENT.html';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }
+  }
 };
 </script>
 
@@ -319,20 +67,99 @@ export default {
 
 .header {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
 }
 
-.action {
-  color: #1890ff;
-  font-size: 12px;
-  padding: 0 5px;
-  cursor: pointer;
-}
-
-.action:hover {
-  font-weight: bolder;
-}
-
-.dialog-footer {
-  text-align: right;
+.documentation-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  // Style the HTML content
+  :deep(h1) {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  :deep(h2) {
+    color: #34495e;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+  
+  :deep(h3) {
+    color: #2c3e50;
+    margin-top: 25px;
+    margin-bottom: 10px;
+  }
+  
+  :deep(h4) {
+    color: #7f8c8d;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+  
+  :deep(p) {
+    line-height: 1.6;
+    margin-bottom: 12px;
+    color: #555;
+  }
+  
+  :deep(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+  }
+  
+  :deep(pre) {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 16px;
+    overflow-x: auto;
+    margin: 15px 0;
+    
+    code {
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 14px;
+    }
+  }
+  
+  :deep(code) {
+    background-color: #f1f3f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+  }
+  
+  :deep(ul, ol) {
+    margin: 15px 0;
+    padding-left: 30px;
+    
+    li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+  }
 }
 </style>

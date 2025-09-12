@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WebView JavaScript Bridge Authentication - A comprehensive guide for implementing WebView JavaScript Bridge authentication in your PNDAO app">
+    <meta name="keywords" content="WebView, JavaScript Bridge, Authentication, PNDAO, Mobile App, API">
+    <title>WebView JavaScript Bridge Authentication - PNDAO Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+        
+        h4 {
+            color: #34495e;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-size: 1.2em;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        code {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+        
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #e3f2fd;
+        }
+        
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .sourceCode {
+            margin: 20px 0;
+        }
+        
+        .mermaid {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .toc {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 5px;
+        }
+        
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>WebView JavaScript Bridge Authentication</h1>
+        <p>A comprehensive guide for implementing WebView JavaScript Bridge authentication in your PNDAO app.</p>
+    </div>
+
+    <div class="toc">
+        <h3>Table of Contents</h3>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#components">Components</a></li>
+            <li><a href="#authentication-flow">Authentication Flow</a></li>
+            <li><a href="#implementation-steps">Implementation Steps</a></li>
+            <li><a href="#error-codes">Error Codes</a></li>
+            <li><a href="#dependencies">Dependencies</a></li>
+            <li><a href="#usage-notes">Usage Notes</a></li>
+            <li><a href="#security-considerations">Security Considerations</a></li>
+        </ul>
+    </div>
+
+    <h2 id="overview">Overview</h2>
+    <p>This system enables seamless communication between a native mobile app and a WebView, specifically for handling user authentication through a JavaScript bridge interface.</p>
+
+    <h2 id="components">Components</h2>
+    
+    <h3 id="bridge-setup-utility">1. Bridge Setup Utility</h3>
+    <p>The bridge utility establishes communication between the WebView and the native app.</p>
+    
+    <h4 id="file-utilsbridge.ts">File: <code>utils/bridge.ts</code></h4>
+    <div class="sourceCode">
+        <pre><code>export const setupWebViewJavascriptBridge = (callback: any) => {
+  if ((window as any).WebViewJavascriptBridge) {
+    return callback((window as any).WebViewJavascriptBridge);
+  }
+  if ((window as any).WVJBCallbacks) {
+    return (window as any).WVJBCallbacks.push(callback);
+  }
+  (window as any).WVJBCallbacks = [callback];
+  let WVJBIframe = document.createElement("iframe");
+  WVJBIframe.style.display = "none";
+  WVJBIframe.src = "https://__bridge_loaded__";
+  document.documentElement.appendChild(WVJBIframe);
+  setTimeout(function () {
+    document.documentElement.removeChild(WVJBIframe);
+  }, 0);
+};</code></pre>
+    </div>
+
+    <h3 id="authentication-bridge-handler">2. Authentication Bridge Handler</h3>
+    <p>The main authentication handler that processes user data from the native app.</p>
+    
+    <h4 id="bridge-method-responseauthentication">Bridge Method: <code>responseAuthentication</code></h4>
+    <p><strong>Parameters:</strong></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>uid</td>
+                <td>int64</td>
+                <td>✅</td>
+                <td>PNDAO app user ID</td>
+            </tr>
+            <tr>
+                <td>username</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>PNDAO app username</td>
+            </tr>
+            <tr>
+                <td>nickname</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>PNDAO app nickname</td>
+            </tr>
+            <tr>
+                <td>avatar</td>
+                <td>string</td>
+                <td>❌</td>
+                <td>PNDAO app user avatar</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 id="implementation-example">Implementation Example</h4>
+    <div class="sourceCode">
+        <pre><code>setupWebViewJavascriptBridge(function (bridge: any) {
+  bridge.init(function (message: any, responseCallback: any) {
+    if (responseCallback) {
+      responseCallback({ "Javascript Responds": "defaultHandler" });
+    }
+  });
+
+  bridge.registerHandler(
+    "responseAuthentication",
+    async function (response: any) {
+      const requestParams = {
+        uid: response["uid"],
+        username: response["username"],
+        nickname: response["nickname"],
+        avatar: response["avatar"],
+        refferalUid: response["referrer"],
+      };
+
+      // Attempt login
+      isLoading.value = true;
+      const { code, data, message, error } = await appLogin(requestParams);
+      isLoading.value = false;
+
+      if (code === 0) {
+        loginSuccess(data);
+        return;
+      }
+
+      // Handle user not found - redirect to registration
+      if (message == "USER_NOT_FOUND" && error == "USER_NOT_FOUND") {
+        router.push({
+          path: "/pndao-auth",
+          query: requestParams,
+        });
+        return;
+      }
+
+      handleErrorCheck(
+        message,
+        t(`api.auth.${error}`),
+        te(`api.auth.${error}`)
+      );
+    }
+  );
+});</code></pre>
+    </div>
+
+    <h3 id="login-api-endpoint">3. Login API Endpoint</h3>
+    <p>The backend API endpoint that processes authentication requests.</p>
+    
+    <h4 id="endpoint-app-login">Endpoint: <code>/app-login</code></h4>
+    <p><strong>Method:</strong> <code>POST</code><br>
+    <strong>Content-Type:</strong> <code>application/json</code></p>
+
+    <h4 id="request-body">Request Body</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>uid</td>
+                <td>int64</td>
+                <td>✅</td>
+                <td>PNDAO app user ID</td>
+            </tr>
+            <tr>
+                <td>username</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>PNDAO app username</td>
+            </tr>
+            <tr>
+                <td>nickname</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>PNDAO app nickname</td>
+            </tr>
+            <tr>
+                <td>avatar</td>
+                <td>string</td>
+                <td>❌</td>
+                <td>PNDAO app user avatar</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 id="response-format">Response Format</h4>
+    <div class="sourceCode">
+        <pre><code>{
+  "code": 0,
+  "message": "Success",
+  "data": {
+    "access_token": "bearer_token_string",
+    "expires_in": 3600,
+    "refresh_token": "refresh_token_string"
+  }
+}</code></pre>
+    </div>
+
+    <h4 id="response-fields">Response Fields</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>code</td>
+                <td>int32</td>
+                <td>Response status code</td>
+            </tr>
+            <tr>
+                <td>message</td>
+                <td>string</td>
+                <td>Response message</td>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>object</td>
+                <td>Authentication data</td>
+            </tr>
+            <tr>
+                <td>└─access_token</td>
+                <td>string</td>
+                <td>Bearer token for API requests</td>
+            </tr>
+            <tr>
+                <td>└─expires_in</td>
+                <td>int64</td>
+                <td>Token expiration time</td>
+            </tr>
+            <tr>
+                <td>└─refresh_token</td>
+                <td>string</td>
+                <td>Token for refreshing access</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="register-api-endpoint">4. Register API Endpoint</h3>
+    <p>The backend API endpoint that processes when user not found.</p>
+    
+    <h4 id="endpoint-app-register">Endpoint: <code>/app-register</code></h4>
+    <p><strong>Method:</strong> <code>POST</code><br>
+    <strong>Content-Type:</strong> <code>application/json</code></p>
+
+    <h4 id="request-body-1">Request Body</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>uid</td>
+                <td>int64</td>
+                <td>✅</td>
+                <td>PNDAO app user ID</td>
+            </tr>
+            <tr>
+                <td>username</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>PNDAO app username</td>
+            </tr>
+            <tr>
+                <td>nickname</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>PNDAO app nickname</td>
+            </tr>
+            <tr>
+                <td>avatar</td>
+                <td>string</td>
+                <td>❌</td>
+                <td>PNDAO app user avatar</td>
+            </tr>
+            <tr>
+                <td>account</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>dapp account</td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>dapp password</td>
+            </tr>
+            <tr>
+                <td>refferalCode</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>dapp invite code</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 id="response-format-1">Response Format</h4>
+    <div class="sourceCode">
+        <pre><code>{
+  "code": 0,
+  "message": "Success",
+  "data": {
+    "access_token": "bearer_token_string",
+    "expires_in": 3600,
+    "refresh_token": "refresh_token_string"
+  }
+}</code></pre>
+    </div>
+
+    <h4 id="response-fields-1">Response Fields</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>code</td>
+                <td>int32</td>
+                <td>Response status code</td>
+            </tr>
+            <tr>
+                <td>message</td>
+                <td>string</td>
+                <td>Response message</td>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>object</td>
+                <td>Authentication data</td>
+            </tr>
+            <tr>
+                <td>└─access_token</td>
+                <td>string</td>
+                <td>Bearer token for API requests</td>
+            </tr>
+            <tr>
+                <td>└─expires_in</td>
+                <td>int64</td>
+                <td>Token expiration time</td>
+            </tr>
+            <tr>
+                <td>└─refresh_token</td>
+                <td>string</td>
+                <td>Token for refreshing access</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="binding-api-endpoint">5. Binding API Endpoint</h3>
+    <p>The backend API endpoint that processes when dapp account exist.</p>
+    
+    <h4 id="endpoint-app-binding">Endpoint: <code>/app-binding</code></h4>
+    <p><strong>Method:</strong> <code>POST</code><br>
+    <strong>Content-Type:</strong> <code>application/json</code></p>
+
+    <h4 id="request-body-2">Request Body</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>uid</td>
+                <td>int64</td>
+                <td>✅</td>
+                <td>PNDAO app user ID</td>
+            </tr>
+            <tr>
+                <td>username</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>PNDAO app username</td>
+            </tr>
+            <tr>
+                <td>nickname</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>PNDAO app nickname</td>
+            </tr>
+            <tr>
+                <td>avatar</td>
+                <td>string</td>
+                <td>❌</td>
+                <td>PNDAO app user avatar</td>
+            </tr>
+            <tr>
+                <td>account</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>dapp account</td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>dapp password</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 id="response-format-2">Response Format</h4>
+    <div class="sourceCode">
+        <pre><code>{
+  "code": 0,
+  "message": "Success",
+  "data": {
+    "access_token": "bearer_token_string",
+    "expires_in": 3600,
+    "refresh_token": "refresh_token_string"
+  }
+}</code></pre>
+    </div>
+
+    <h4 id="response-fields-2">Response Fields</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>code</td>
+                <td>int32</td>
+                <td>Response status code</td>
+            </tr>
+            <tr>
+                <td>message</td>
+                <td>string</td>
+                <td>Response message</td>
+            </tr>
+            <tr>
+                <td>data</td>
+                <td>object</td>
+                <td>Authentication data</td>
+            </tr>
+            <tr>
+                <td>└─access_token</td>
+                <td>string</td>
+                <td>Bearer token for API requests</td>
+            </tr>
+            <tr>
+                <td>└─expires_in</td>
+                <td>int64</td>
+                <td>Token expiration time</td>
+            </tr>
+            <tr>
+                <td>└─refresh_token</td>
+                <td>string</td>
+                <td>Token for refreshing access</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="pndao-customer-service-bridge">6. PNDAO Customer Service Bridge</h3>
+    <p>Customer service bridge for PNDAO app communication.</p>
+    
+    <h4 id="bridge-method-contactcustomservice">Bridge Method: <code>contactCustomService</code></h4>
+    <p>This bridge method allows the WebView to initiate customer service contact through the native app.</p>
+
+    <h4 id="parameters">Parameters</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>uid</td>
+                <td>int64</td>
+                <td>✅</td>
+                <td>dapp user ID</td>
+            </tr>
+            <tr>
+                <td>contact_id</td>
+                <td>int64</td>
+                <td>✅</td>
+                <td>PNDAO Service account ID</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 id="implementation-example-1">Implementation Example</h4>
+    <div class="sourceCode">
+        <pre><code>// Contact customer service through bridge
+const contactService = (serviceAccount: any) => {
+  const params = {
+    uid: Number(userStore.uid),
+    contact_id: Number(serviceAccount.value),
+  };
+
+  (window as any).WebViewJavascriptBridge.callHandler(
+    "contactCustomService",
+    JSON.stringify(params),
+    function (responseData: any) {
+      // Handle response from native app
+      console.log("Customer service response:", responseData);
+    }
+  );
+};</code></pre>
+    </div>
+
+    <h2 id="pndao-dapp-pay-bridge">7. PNDAO Dapp Pay Bridge</h2>
+    <p>Pay function in PNDAO app.</p>
+    
+    <h3 id="bridge-method-paydapp">Bridge Method: <code>payDapp</code></h3>
+
+    <h4 id="parameters-1">Parameters</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>order_id</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>Pay order id</td>
+            </tr>
+            <tr>
+                <td>seller_wallet_address</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>From address in wallet</td>
+            </tr>
+            <tr>
+                <td>buyer_wallet_address</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>To address in wallet</td>
+            </tr>
+            <tr>
+                <td>symbol</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>Token symbol (only USDK)</td>
+            </tr>
+            <tr>
+                <td>amount</td>
+                <td>string || number</td>
+                <td>✅</td>
+                <td>Transfer amount</td>
+            </tr>
+            <tr>
+                <td>price</td>
+                <td>string</td>
+                <td>✅</td>
+                <td>Token quantity (amount * 100000)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 id="implementation-example-2">Implementation Example</h4>
+    <div class="sourceCode">
+        <pre><code>(window as any).WebViewJavascriptBridge.callHandler(
+  "payDapp",
+  {
+    order_id: snowflake.generate(),
+    seller_wallet_address: fromAddress,
+    buyer_wallet_address: toAddress,
+    symbol: "USDK",
+    amount: amount,
+    price: amount * 100000,
+  },
+  function (responseData: any) {}
+);</code></pre>
+    </div>
+
+    <h2 id="pndao-dapp-pay-response-bridge">8. PNDAO Dapp Pay Response Bridge</h2>
+    <p>Pay response function in PNDAO app.</p>
+    
+    <h3 id="bridge-method-responsepaydapp">Bridge Method: <code>responsePayDapp</code></h3>
+
+    <h4 id="response-parameters">Response Parameters</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>orderId</td>
+                <td>string</td>
+                <td>Pay order id</td>
+            </tr>
+            <tr>
+                <td>txHash</td>
+                <td>string</td>
+                <td>Transaction hash</td>
+            </tr>
+            <tr>
+                <td>fromAddress</td>
+                <td>string</td>
+                <td>From address in wallet</td>
+            </tr>
+            <tr>
+                <td>toAddress</td>
+                <td>string</td>
+                <td>To address in wallet</td>
+            </tr>
+            <tr>
+                <td>amount</td>
+                <td>string || number</td>
+                <td>Transfer amount</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 id="implementation-example-3">Implementation Example</h4>
+    <div class="sourceCode">
+        <pre><code>setupWebViewJavascriptBridge(function (bridge: any) {
+  bridge.init(function (message: any, responseCallback: any) {
+    if (responseCallback) {
+      responseCallback({ "Javascript Responds": "defaultHandler" });
+    }
+  });
+
+  // register handler
+  bridge.registerHandler("responsePayDapp", async function (response: any) {
+    console.log("responsePayDapp completed:", response);
+    const { code, error, data, message } = await rechargeAdd({
+      chain: protocol.value.type,
+      address: protocol.value.account,
+      amount: multiply(money.value),
+      currency: "USDT",
+      originalAmount: multiply(money.value),
+      isCertified: protocol.value.isCertified,
+      payType: 1,
+      orderId: response["orderId"],
+      txHash: response["txHash"],
+      fromAddress: response["fromAddress"],
+      toAddress: response["toAddress"],
+      txAmount: response["amount"],
+    });
+
+    if (!code) {
+      router.push({
+        path: "/center/rechargeNow",
+        query: {
+          id: data.id,
+          chainAddress: protocol.value.account,
+          chain: protocol.value.type,
+          amount: money.value,
+        },
+      });
+      return;
+    }
+
+    handleErrorCheck(
+      message,
+      t(`front.api.center.${error}`),
+      te(`front.api.center.${error}`)
+    );
+  });
+});</code></pre>
+    </div>
+
+    <h2 id="authentication-flow">Authentication Flow</h2>
+    <div class="mermaid">
+        <pre><code>sequenceDiagram
+    participant App as Native App
+    participant WebView as WebView
+    participant API as Backend API
+
+    App->>WebView: Initialize bridge
+    WebView->>WebView: Setup bridge handlers
+    App->>WebView: Send user data via responseAuthentication
+    WebView->>API: POST /app-login with user data
+
+    alt User exists
+        API->>WebView: Return tokens
+        WebView->>WebView: loginSuccess(data)
+    else User not found
+        API->>WebView: USER_NOT_FOUND error
+        WebView->>WebView: Redirect to /pndao-auth
+    else Other error
+        API->>WebView: Error response
+        WebView->>WebView: handleErrorCheck()
+    end</code></pre>
+    </div>
+
+    <h2 id="implementation-steps">Implementation Steps</h2>
+    
+    <h3 id="setup-bridge-communication">1. Setup Bridge Communication</h3>
+    <ol>
+        <li>Import the bridge utility in your WebView component</li>
+        <li>Initialize the bridge with appropriate handlers</li>
+        <li>Register the <code>responseAuthentication</code> handler</li>
+    </ol>
+
+    <h3 id="handle-authentication-response">2. Handle Authentication Response</h3>
+    <ol>
+        <li>Extract user data from the bridge response</li>
+        <li>Call the <code>/app-login</code> API endpoint</li>
+        <li>Handle success, user not found, and error cases appropriately</li>
+    </ol>
+
+    <h3 id="error-handling">3. Error Handling</h3>
+    <p>The system handles three main scenarios:</p>
+    <ul>
+        <li><strong>Success (code: 0)</strong>: User authenticated successfully</li>
+        <li><strong>User Not Found</strong>: Redirect to registration/binding page</li>
+        <li><strong>Other Errors</strong>: Display appropriate error messages</li>
+    </ul>
+
+    <h2 id="error-codes">Error Codes</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Message</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0</td>
+                <td>Success</td>
+                <td>Authentication successful</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>USER_NOT_FOUND</td>
+                <td>User needs to register or bind account</td>
+            </tr>
+            <tr>
+                <td>Others</td>
+                <td>Various</td>
+                <td>Check API documentation for details</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 id="dependencies">Dependencies</h2>
+    <ul>
+        <li>TypeScript support</li>
+        <li>Vue Router (for navigation)</li>
+        <li>Internationalization library (for error messages)</li>
+        <li>HTTP client for API calls</li>
+    </ul>
+
+    <h2 id="usage-notes">Usage Notes</h2>
+    <ol>
+        <li>Ensure the WebView has JavaScript enabled</li>
+        <li>The bridge URL <code>https://__bridge_loaded__</code> is a special protocol for bridge initialization</li>
+        <li>Handle loading states appropriately during authentication</li>
+        <li>Implement proper error handling for network failures</li>
+        <li>Consider implementing token refresh mechanisms</li>
+    </ol>
+
+    <h2 id="security-considerations">Security Considerations</h2>
+    <ul>
+        <li>Validate all incoming bridge data</li>
+        <li>Implement proper token storage (secure storage recommended)</li>
+        <li>Handle token expiration gracefully</li>
+        <li>Use HTTPS for all API communications</li>
+        <li>Implement proper logout functionality to clear stored tokens</li>
+    </ul>
+</body>
+</html>
