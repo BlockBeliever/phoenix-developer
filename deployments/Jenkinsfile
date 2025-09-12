@@ -6,12 +6,8 @@ pipeline {
     stages {
         stage('git'){
             steps {
-                // 
-               // git branch: "${bbranch}",credentialsId: '007', url: 'git@github.com:BlockBeliever/phoenix-developer.git'
                 echo "${bbranch}";
                 echo Branch;
-                // def check_groovy_file="./Jenkinsfile2";
-                // load "${check_groovy_file}";
                 echo 'git clone';
             }
         }

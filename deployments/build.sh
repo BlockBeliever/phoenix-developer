@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ls 
+ls
 pwd
-npm install 
+npm install
 
 if [ "${EVN}" = "pre" ];then
     echo "pre"
@@ -10,9 +10,5 @@ if [ "${EVN}" = "pre" ];then
     npm run build:prod
 else
     echo "pro"
-    # cp -f ./site/${SITE}/.env.production ./.env.production
-    # cat ./.env.production
-    # cp -f ./site/${SITE}/index.js ./src/router
-    # cat ./src/router/index.js
     npm run build:prod
 fi
