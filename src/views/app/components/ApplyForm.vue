@@ -46,7 +46,7 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="是否旋转" prop="isRotate">
-            <el-checkbox v-model="postForm.isRotate" @change="handleRotateCheckbox($event)">
+            <el-checkbox v-model="isRotate">
             </el-checkbox>
           </el-form-item>
           <el-form-item label="应用简介" prop="intro">
@@ -118,6 +118,7 @@ export default {
         callbackUrl: [{ validator: validateRequire, trigger: "blur" }],
       },
       uplaodData: { type: "dapp" },
+      isRotate: false,
     };
   },
   computed: {
@@ -146,6 +147,7 @@ export default {
       }
       this.$refs.postForm.validate((valid) => {
         if (valid) {
+          this.postForm.isRotate = this.isRotate ? 1 : 0;
           appleyDapp(this.postForm).then((res) => {
             if (res.code == 0) {
               this.$notify({

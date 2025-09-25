@@ -47,7 +47,7 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="是否旋转" prop="isRotate">
-            <el-checkbox v-model="postForm.isRotate" @change="handleRotateCheckbox($event)">
+            <el-checkbox v-model="isRotate">
             </el-checkbox>
           </el-form-item>
           <el-form-item label="应用简介" prop="intro">
@@ -115,9 +115,10 @@ export default {
         intro: [{ validator: validateRequire, trigger: "blur" }],
         comment: [{ validator: validateRequire, trigger: "blur" }],
         domain: [{ validator: validateRequire, trigger: "blur" }],
-        callbackUrl: [{ validator: validateRequire, trigger: "blur" }]
+        callbackUrl: [{ validator: validateRequire, trigger: "blur" }],
       },
-       uplaodData:{"type":"dapp"}
+      uplaodData:{"type":"dapp"},
+      isRotate: false
     };
   },
   computed: {
@@ -126,6 +127,7 @@ export default {
   methods: {
     submitForm() {
       this.$refs.postForm.validate(valid => {
+        this.postForm.isRotate = this.isRotate ? 1 : 0;
         if (valid) {
           editDapp(this.postForm).then(res => {
             if (res.code == 0) {
@@ -193,6 +195,7 @@ export default {
         prent.postForm.domain = res.data.domain;
         prent.postForm.callbackUrl = res.data.callbackUrl;
         prent.postForm.isRotate = res.data.isRotate;
+        this.isRotate = prent.postForm.isRotate > 0;
       } else {
         console.log(res);
       }
