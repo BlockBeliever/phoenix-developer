@@ -46,6 +46,10 @@
               placeholder="回调目录，支付等消息回调信息"
             ></el-input>
           </el-form-item>
+          <el-form-item label="是否旋转" prop="isRotate">
+            <el-checkbox v-model="postForm.isRotate" @change="handleRotateCheckbox($event)">
+            </el-checkbox>
+          </el-form-item>
           <el-form-item label="应用简介" prop="intro">
             <el-input
               v-model="postForm.intro"
@@ -82,7 +86,8 @@ const defaultForm = {
   intro: "",
   comment: "",
   domain: "",
-  callbackUrl: ""
+  callbackUrl: "",
+  isRotate: 0
 };
 
 export default {
@@ -164,6 +169,13 @@ export default {
       }
       this.uplaodData.uid = this.uid;
       console.log("上传前");
+    },
+    handleRotateCheckbox(val) {
+      if (val) {
+        this.postForm.isRotate = 1;
+      } else {
+        this.postForm.isRotate = 0;
+      }
     }
   },
   created() {
