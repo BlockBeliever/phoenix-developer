@@ -46,8 +46,10 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="是否旋转" prop="isRotate">
-            <el-checkbox v-model="postForm.isRotate" @change="handleRotateCheckbox($event)">
-            </el-checkbox>
+            <el-radio v-model="postForm.isRotate" value=1>
+            </el-radio><label>是</label>
+            <el-radio v-model="postForm.isRotate" value=0>
+            </el-radio><label>否</label>
           </el-form-item>
           <el-form-item label="应用简介" prop="intro">
             <el-input
@@ -169,13 +171,6 @@ export default {
           return false;
         }
       });
-    },
-    handleRotateCheckbox(val) {
-      if (val) {
-        this.postForm.isRotate = 1;
-      } else {
-        this.postForm.isRotate = 0;
-      }
     }
   },
 };

@@ -47,8 +47,10 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="是否旋转" prop="isRotate">
-            <el-checkbox v-model="postForm.isRotate" @change="handleRotateCheckbox($event)">
-            </el-checkbox>
+            <el-radio v-model="postForm.isRotate" value=1>
+            </el-radio><label>是</label>
+            <el-radio v-model="postForm.isRotate" value=0>
+            </el-radio><label>否</label>
           </el-form-item>
           <el-form-item label="应用简介" prop="intro">
             <el-input
@@ -169,13 +171,6 @@ export default {
       }
       this.uplaodData.uid = this.uid;
       console.log("上传前");
-    },
-    handleRotateCheckbox(val) {
-      if (val) {
-        this.postForm.isRotate = 1;
-      } else {
-        this.postForm.isRotate = 0;
-      }
     }
   },
   created() {
@@ -192,6 +187,7 @@ export default {
         prent.postForm.comment = res.data.comment;
         prent.postForm.domain = res.data.domain;
         prent.postForm.callbackUrl = res.data.callbackUrl;
+        prent.postForm.isRotate = res.data.isRotate;
       } else {
         console.log(res);
       }
