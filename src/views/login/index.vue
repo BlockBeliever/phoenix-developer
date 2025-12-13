@@ -117,13 +117,13 @@ export default {
               this.$store.dispatch('user/login', res.data)
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               // this.loading = false
-            
+
             }).catch(() => {
               this.$message({
                 type: 'info',
                 message: '已取消'
-              });  
-              location. reload()        
+              });
+              location.reload()
             });
 
         }else if(res.message=="您已经被禁止登录"){
@@ -132,13 +132,13 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          location. reload()
+          location.reload()
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消'
-          });  
-          location. reload()        
+          });
+          location.reload()
         });
         }
       })
