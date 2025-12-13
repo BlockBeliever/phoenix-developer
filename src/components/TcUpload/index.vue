@@ -181,7 +181,7 @@ export default {
         // 直接调用 cos sdk 的方法
         cos.uploadFile(
           {
-            Bucket: "flct-1319989102" /* 填写自己的 bucket，必须字段 */,
+            Bucket: "flct-1327669833" /* 填写自己的 bucket，必须字段 */,
             Region: "ap-singapore" /* 存储桶所在地域，必须字段 */,
             Key: `${
               this.uploadPath

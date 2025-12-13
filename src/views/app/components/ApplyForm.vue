@@ -45,6 +45,10 @@
               placeholder="回调目录，支付等消息回调信息"
             ></el-input>
           </el-form-item>
+          <el-form-item label="是否旋转" prop="isRotate">
+            <el-checkbox v-model="isRotate">
+            </el-checkbox>
+          </el-form-item>
           <el-form-item label="应用简介" prop="intro">
             <el-input
               v-model="postForm.intro"
@@ -82,6 +86,7 @@ const defaultForm = {
   comment: "",
   domain: "",
   callbackUrl: "",
+  isRotate: 0
 };
 
 export default {
@@ -113,6 +118,7 @@ export default {
         callbackUrl: [{ validator: validateRequire, trigger: "blur" }],
       },
       uplaodData: { type: "dapp" },
+      isRotate: false,
     };
   },
   computed: {
@@ -141,6 +147,7 @@ export default {
       }
       this.$refs.postForm.validate((valid) => {
         if (valid) {
+          this.postForm.isRotate = this.isRotate ? 1 : 0;
           appleyDapp(this.postForm).then((res) => {
             if (res.code == 0) {
               this.$notify({
@@ -165,6 +172,13 @@ export default {
         }
       });
     },
+    handleRotateCheckbox(val) {
+      if (val) {
+        this.postForm.isRotate = 1;
+      } else {
+        this.postForm.isRotate = 0;
+      }
+    }
   },
 };
 </script>
